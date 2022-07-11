@@ -410,6 +410,10 @@ void Screen::drawarrow()
     labelimage->setdrawarrowenable();
 }
 
+void Screen::returnEdit() {
+    labelimage->setReturnEditEnable();
+}
+
 void Screen::drawround()
 {
     labelimage->setroundenable();
