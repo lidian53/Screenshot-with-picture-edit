@@ -48,6 +48,7 @@ public:
     void settextedittovector();
     void drawarrow(QPoint startpoint,QPoint endpoint,QPainter &p);
     void setimagetolabel(const QImage &image);
+    void setReturnEditEnable();
     QImage resultimage();
 public slots:
     void ontextchanged();
@@ -68,6 +69,7 @@ private:
     bool isdrawround;
     bool istextedit;
     bool isdrawarrow;
+    bool isreturnedit;
     Screen *screen;
 
 };
