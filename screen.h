@@ -4,6 +4,7 @@
 #include "myrect.h"
 #include"qslabel.h"
 #include"controlwidget.h"
+#include"qpainterpath.h"
 enum Type {
     RECT1, RECT2, RECT3, RECT4, RECT, NO
 };
@@ -22,6 +23,7 @@ public:
     void drawarrow();
     void drawround();
     void drawrectang();
+    void returnEdit();
     void paintEvent(QPaintEvent *);
 
     void mousePressEvent(QMouseEvent *);
