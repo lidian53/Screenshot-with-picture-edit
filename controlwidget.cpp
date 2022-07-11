@@ -96,6 +96,6 @@ void ControlWidget::on_mosaicBtn_clicked()
 
 void ControlWidget::on_returneditBtn_clicked()
 {
-    //
+    screen->returnEdit();
 }
 
