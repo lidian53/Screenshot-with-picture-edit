@@ -6,19 +6,20 @@ using namespace Qt;
 QSLabel::QSLabel(QWidget* parent)
 {
     setMouseTracking(true);
-    ispressed=false;
-    isdrawline=false;
-    isdrawrectangle=false;
-    isdrawround=false;
-    istextedit=false;
-    isdrawarrow=false;
-    m_plaintextedit=new QTextEdit(this);
+    ispressed = false;
+    isdrawline = false;
+    isdrawrectangle = false;
+    isdrawround = false;
+    istextedit = false;
+    isdrawarrow = false;
+    isreturnedit = false;
+    m_plaintextedit = new QTextEdit(this);
     m_plaintextedit->hide();
     m_plaintextedit->resize(60,40);
-    QPalette p1=m_plaintextedit->palette();
-    p1.setBrush(QPalette::Base,QBrush(QColor(255,0,0,0)));
+    QPalette p1 = m_plaintextedit->palette();
+    p1.setBrush(QPalette::Base, QBrush(QColor(255, 0, 0, 0)));
     m_plaintextedit->setPalette(p1);
-    connect(m_plaintextedit,SIGNAL(textChanged()),this,SLOT(ontextchanged()));
+    connect(m_plaintextedit,SIGNAL(textChanged()), this, SLOT(ontextchanged()));
     m_plaintextedit->setStyleSheet("QTextEdit{ border: 1px solid #dadada; }"
                                    "QTextEdit{font-family:'Microsoft YaHei'; font-size:14px;color:#ff0000;}"
                                    ""
@@ -96,6 +97,7 @@ void QSLabel::mouseReleaseEvent(QMouseEvent *event)
         rectangle->startPoint=startPoint;
         rectangle->endPoint=endPoint;
         rectangles.push_back(rectangle);
+        actionVec.push_back("rectangles");
         update();
     }
     else if(isdrawround)
@@ -105,6 +107,7 @@ void QSLabel::mouseReleaseEvent(QMouseEvent *event)
         round->startPoint=startPoint;
         round->endPoint=endPoint;
         rounds.push_back(round);
+        actionVec.push_back("rounds");
         update();
     }
     else if(isdrawarrow)
@@ -114,6 +117,7 @@ void QSLabel::mouseReleaseEvent(QMouseEvent *event)
         arrow->startPoint=startPoint;
         arrow->endPoint=endPoint;
         arrows.push_back(arrow);
+        actionVec.push_back("arrows");
         update();
     }
 }
@@ -222,6 +226,7 @@ void QSLabel::setdrawlineenable()
         isdrawround=false;
         istextedit=false;
         isdrawarrow=false;
+        isreturnedit = false;
         m_plaintextedit->hide();
 }
 
@@ -233,7 +238,7 @@ void QSLabel::setrectangleenable()
         isdrawround=false;
         istextedit=false;
         isdrawarrow=false;
-
+    isreturnedit = false;
         m_plaintextedit->hide();
 }
 
@@ -245,7 +250,7 @@ void QSLabel::setdrawarrowenable()
        isdrawrectangle=false;
        isdrawround=false;
        istextedit=false;
-
+    isreturnedit = false;
        m_plaintextedit->hide();
 }
 
@@ -257,7 +262,7 @@ void QSLabel::setroundenable()
        isdrawround=true;
        isdrawarrow=false;
        istextedit=false;
-
+    isreturnedit = false;
        m_plaintextedit->hide();
 }
 
@@ -269,7 +274,7 @@ void QSLabel::settexteditenable()
        isdrawround=false;
        isdrawarrow=false;
        istextedit=true;
-
+    isreturnedit = false;
        m_plaintextedit->hide();
 }
 
@@ -283,6 +288,38 @@ void QSLabel::settextedittovector()
         texts.push_back(text);
         update();
     }
+}
+
+void QSLabel::setReturnEditEnable() {
+    isreturnedit = true;
+    //if (isdrawarrow && !arrows.empty()) {
+        arrows.pop_back();
+        update();
+    //}
+    //if (isdrawline && !lines.empty()) {
+    //    lines.pop_back();
+    //    update();
+    //}
+    //if (isdrawrectangle && !rectangles.empty()) {
+    //    rectangles.pop_back();
+    //    update();
+    //}
+    //if (isdrawround && !rounds.empty()) {
+    //    rounds.pop_back();
+     //   update();
+    //}
+    if (!actionVec.empty()) {
+        QString str = actionVec.back();
+        actionVec.pop_back();
+        if (QString::compare(str, "rectangles") == 0) {
+            rectangles.pop_back();
+        } else if (QString::compare(str, "rounds") == 0) {
+            rounds.pop_back();
+        } else if (QString::compare(str, "arrows") == 0) {
+            arrows.pop_back();
+        }
+    }
+    m_plaintextedit->hide();
 }
 
 QImage QSLabel::resultimage()
