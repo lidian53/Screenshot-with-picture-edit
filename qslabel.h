@@ -60,6 +60,7 @@ private:
     QVector<myRound*> rounds;
     QVector<myText*> texts;
     QVector<myArrow*> arrows;
+    QVector<QString> actionVec;
     QString text;
     QImage selectimage;
     QTextEdit *m_plaintextedit;
